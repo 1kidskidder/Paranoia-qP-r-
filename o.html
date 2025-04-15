@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FOV + Crosshair</title>
+  <style>
+    body {
+      margin: 0;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    .fov-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px; /* FOV diameter */
+      height: 300px;
+      margin-left: -150px;
+      margin-top: -150px;
+      border: 1px solid white;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .crosshair-outer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      margin-left: -5px;
+      margin-top: -5px;
+      border: 1px solid red;
+      border-radius: 50%;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .crosshair-inner {
+      width: 4px;
+      height: 4px;
+      background-color: red;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="fov-circle"></div>
+  <div class="crosshair-outer">
+    <div class="crosshair-inner"></div>
+  </div>
+</body>
+</html>
