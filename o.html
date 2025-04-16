@@ -2,29 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Crosshair Only</title>
+  <title>Centered Crosshair</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
+      width: 100%;
       background: transparent;
       overflow: hidden;
     }
 
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
     .crosshair-outer {
+      position: absolute;
       width: 10px;
       height: 10px;
       border: 1px solid red;
@@ -32,6 +22,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      pointer-events: none;
     }
 
     .crosshair-inner {
@@ -43,10 +34,22 @@
   </style>
 </head>
 <body>
-  <div class="overlay">
-    <div class="crosshair-outer">
-      <div class="crosshair-inner"></div>
-    </div>
+  <div class="crosshair-outer" id="crosshair">
+    <div class="crosshair-inner"></div>
   </div>
+
+  <script>
+    function centerCrosshair() {
+      const crosshair = document.getElementById('crosshair');
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const offset = 5; // half of 10px (outer circle size)
+      crosshair.style.left = (centerX - offset) + 'px';
+      crosshair.style.top = (centerY - offset) + 'px';
+    }
+
+    window.addEventListener('resize', centerCrosshair);
+    window.addEventListener('load', centerCrosshair);
+  </script>
 </body>
 </html>
