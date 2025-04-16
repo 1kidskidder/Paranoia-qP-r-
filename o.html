@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FOV + Crosshair</title>
+  <title>Crosshair Only</title>
   <style>
     html, body {
       margin: 0;
@@ -22,14 +22,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    .fov-circle {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      border: 1px solid white;
-      border-radius: 50%;
     }
 
     .crosshair-outer {
@@ -52,7 +44,6 @@
 </head>
 <body>
   <div class="overlay">
-    <div class="fov-circle"></div>
     <div class="crosshair-outer">
       <div class="crosshair-inner"></div>
     </div>
