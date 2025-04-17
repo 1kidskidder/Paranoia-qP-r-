@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Centered Crosshair</title>
+  <title>Crosshair (JS Only)</title>
   <style>
     html, body {
       margin: 0;
@@ -12,44 +12,43 @@
       background: transparent;
       overflow: hidden;
     }
-
-    .crosshair-outer {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border: 1px solid red;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-    }
-
-    .crosshair-inner {
-      width: 4px;
-      height: 4px;
-      background-color: red;
-      border-radius: 50%;
-    }
   </style>
 </head>
 <body>
-  <div class="crosshair-outer" id="crosshair">
-    <div class="crosshair-inner"></div>
-  </div>
-
   <script>
-    function centerCrosshair() {
-      const crosshair = document.getElementById('crosshair');
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      const offset = 5; // half of 10px (outer circle size)
-      crosshair.style.left = (centerX - offset) + 'px';
-      crosshair.style.top = (centerY - offset) + 'px';
+    function createCrosshair() {
+      const outer = document.createElement('div');
+      outer.style.position = 'absolute';
+      outer.style.width = '10px';
+      outer.style.height = '10px';
+      outer.style.border = '1px solid red';
+      outer.style.borderRadius = '50%';
+      outer.style.display = 'flex';
+      outer.style.alignItems = 'center';
+      outer.style.justifyContent = 'center';
+      outer.style.pointerEvents = 'none';
+
+      const inner = document.createElement('div');
+      inner.style.width = '4px';
+      inner.style.height = '4px';
+      inner.style.backgroundColor = 'red';
+      inner.style.borderRadius = '50%';
+
+      outer.appendChild(inner);
+      document.body.appendChild(outer);
+
+      function positionCrosshair() {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        outer.style.left = (centerX - 5) + 'px'; // half of 10px
+        outer.style.top = (centerY - 5) + 'px';
+      }
+
+      window.addEventListener('resize', positionCrosshair);
+      positionCrosshair();
     }
 
-    window.addEventListener('resize', centerCrosshair);
-    window.addEventListener('load', centerCrosshair);
+    window.addEventListener('load', createCrosshair);
   </script>
 </body>
 </html>
