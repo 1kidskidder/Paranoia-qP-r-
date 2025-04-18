@@ -1,105 +1,54 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Fortnite FOV Circle</title>
+  <meta charset="UTF-8">
+  <title>Crosshair (JS Only)</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
+      height: 100%;
+      width: 100%;
       background: transparent;
-      user-select: none;
-    }
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      user-select: none;
-    }
-    #activationNotice {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.6);
-      color: limegreen;
-      font-family: monospace;
-      font-size: 18px;
-      padding: 8px 16px;
-      border-radius: 8px;
-      opacity: 1;
-      transition: opacity 1s ease-in-out;
-      z-index: 9999;
+      overflow: hidden;
     }
   </style>
 </head>
 <body>
-  <canvas id="fovCanvas"></canvas>
-  <div id="activationNotice" style="display: none;">Activated</div>
-
   <script>
-    if (typeof h5gg === "undefined" || !h5gg.require || h5gg.require(7.9) !== true) {
-      alert("â");
-      throw new Error("Incompatible h5gg version.");
-    } else {
-      const notice = document.getElementById("activationNotice");
-      notice.style.display = "block";
+    function createCrosshair() {
+      const outer = document.createElement('div');
+      outer.style.position = 'absolute';
+      outer.style.width = '10px';
+      outer.style.height = '10px';
+      outer.style.border = '1px solid red';
+      outer.style.borderRadius = '50%';
+      outer.style.display = 'flex';
+      outer.style.alignItems = 'center';
+      outer.style.justifyContent = 'center';
+      outer.style.pointerEvents = 'none';
 
-      setTimeout(() => {
-        notice.style.opacity = "0";
-      }, 3000);
+      const inner = document.createElement('div');
+      inner.style.width = '4px';
+      inner.style.height = '4px';
+      inner.style.backgroundColor = 'red';
+      inner.style.borderRadius = '50%';
 
-      setTimeout(() => {
-        notice.style.display = "none";
-      }, 4000);
+      outer.appendChild(inner);
+      document.body.appendChild(outer);
+
+      function positionCrosshair() {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        outer.style.left = (centerX - 5) + 'px'; // half of 10px
+        outer.style.top = (centerY - 5) + 'px';
+      }
+
+      window.addEventListener('resize', positionCrosshair);
+      positionCrosshair();
     }
 
-    const canvas = document.getElementById('fovCanvas');
-    const ctx = canvas.getContext('2d');
-
-    const drawFOV = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      const radius = 120;
-
-      // FOV Circle
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-      ctx.fillStyle = 'rgba(80, 80, 80, 0.3)';
-      ctx.fill();
-      ctx.strokeStyle = 'white';
-      ctx.lineWidth = 0.3;
-      ctx.stroke();
-
-      // Red Crosshair
-      const size = 4;
-      ctx.strokeStyle = 'red';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(centerX - size, centerY);
-      ctx.lineTo(centerX + size, centerY);
-      ctx.moveTo(centerX, centerY - size);
-      ctx.lineTo(centerX, centerY + size);
-      ctx.stroke();
-    };
-
-    const resizeCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.style.width = window.innerWidth + 'px';
-      canvas.style.height = window.innerHeight + 'px';
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
-      drawFOV();
-    };
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+    window.addEventListener('load', createCrosshair);
   </script>
 </body>
 </html>
