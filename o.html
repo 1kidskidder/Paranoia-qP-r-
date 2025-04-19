@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Fortnite Crosshair Only</title>
+  <title>Glowing Crosshair</title>
   <style>
     html, body {
       margin: 0;
@@ -63,16 +63,34 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
+      const size = 2.5;
 
-      const size = 4;
-      ctx.strokeStyle = 'yellow';
-      ctx.lineWidth = 1;
+      // Draw outline (black, behind yellow)
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 2;
+      ctx.shadowBlur = 0;
       ctx.beginPath();
       ctx.moveTo(centerX - size, centerY);
       ctx.lineTo(centerX + size, centerY);
       ctx.moveTo(centerX, centerY - size);
       ctx.lineTo(centerX, centerY + size);
       ctx.stroke();
+
+      // Draw yellow glowing crosshair
+      ctx.strokeStyle = 'yellow';
+      ctx.lineWidth = 1;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = 'yellow';
+      ctx.beginPath();
+      ctx.moveTo(centerX - size, centerY);
+      ctx.lineTo(centerX + size, centerY);
+      ctx.moveTo(centerX, centerY - size);
+      ctx.lineTo(centerX, centerY + size);
+      ctx.stroke();
+
+      // Reset shadow
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = 'transparent';
     };
 
     const resizeCanvas = () => {
