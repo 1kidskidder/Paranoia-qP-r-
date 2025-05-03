@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Fortnite Crosshair</title>
+  <title>Glowing Crosshair</title>
   <style>
     html, body {
       margin: 0;
@@ -36,11 +36,10 @@
   </style>
 </head>
 <body>
-  <canvas id="crosshairCanvas"></canvas>
+  <canvas id="fovCanvas"></canvas>
   <div id="activationNotice" style="display: none;">Activated</div>
 
   <script>
-    // h5gg version check
     if (typeof h5gg === "undefined" || !h5gg.require || h5gg.require(7.9) !== true) {
       alert("❌");
       throw new Error("Incompatible h5gg version.");
@@ -57,18 +56,19 @@
       }, 4000);
     }
 
-    const canvas = document.getElementById('crosshairCanvas');
+    const canvas = document.getElementById('fovCanvas');
     const ctx = canvas.getContext('2d');
 
-    function drawCrosshair() {
+    const drawCrosshair = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
-      const size = 3;
+      const size = 2.5;
 
-      // Black thin outline
+      // Black outline
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 2;
+      ctx.shadowBlur = 0;
       ctx.beginPath();
       ctx.moveTo(centerX - size, centerY);
       ctx.lineTo(centerX + size, centerY);
@@ -76,22 +76,24 @@
       ctx.lineTo(centerX, centerY + size);
       ctx.stroke();
 
-      // Cyan crosshair + glow
-      ctx.save();
+      // Cyan glowing crosshair
       ctx.strokeStyle = 'cyan';
-      ctx.lineWidth = 1.4;
+      ctx.lineWidth = 1;
+      ctx.shadowBlur = 10;
       ctx.shadowColor = 'cyan';
-      ctx.shadowBlur = 6;
       ctx.beginPath();
       ctx.moveTo(centerX - size, centerY);
       ctx.lineTo(centerX + size, centerY);
       ctx.moveTo(centerX, centerY - size);
       ctx.lineTo(centerX, centerY + size);
       ctx.stroke();
-      ctx.restore();
-    }
 
-    function resizeCanvas() {
+      // Reset shadow
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = 'transparent';
+    };
+
+    const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
@@ -100,7 +102,7 @@
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
       drawCrosshair();
-    }
+    };
 
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
