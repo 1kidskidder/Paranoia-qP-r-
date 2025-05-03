@@ -36,7 +36,7 @@
   </style>
 </head>
 <body>
-  <canvas id="fovCanvas"></canvas>
+  <canvas id="crosshairCanvas"></canvas>
   <div id="activationNotice" style="display: none;">Activated</div>
 
   <script>
@@ -47,28 +47,28 @@
     } else {
       const notice = document.getElementById("activationNotice");
       notice.style.display = "block";
+
       setTimeout(() => {
         notice.style.opacity = "0";
       }, 3000);
+
       setTimeout(() => {
         notice.style.display = "none";
       }, 4000);
     }
 
-    const canvas = document.getElementById('fovCanvas');
+    const canvas = document.getElementById('crosshairCanvas');
     const ctx = canvas.getContext('2d');
 
-    const drawCrosshair = () => {
+    function drawCrosshair() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
       const size = 3;
-      const thinWidth = 1;
-      const outlineWidth = 4;
 
-      // Draw thick black outline
+      // Black thin outline
       ctx.strokeStyle = 'black';
-      ctx.lineWidth = outlineWidth;
+      ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(centerX - size, centerY);
       ctx.lineTo(centerX + size, centerY);
@@ -76,18 +76,22 @@
       ctx.lineTo(centerX, centerY + size);
       ctx.stroke();
 
-      // Draw cyan crosshair on top
+      // Cyan crosshair + glow
+      ctx.save();
       ctx.strokeStyle = 'cyan';
-      ctx.lineWidth = thinWidth;
+      ctx.lineWidth = 1.4;
+      ctx.shadowColor = 'cyan';
+      ctx.shadowBlur = 6;
       ctx.beginPath();
       ctx.moveTo(centerX - size, centerY);
       ctx.lineTo(centerX + size, centerY);
       ctx.moveTo(centerX, centerY - size);
       ctx.lineTo(centerX, centerY + size);
       ctx.stroke();
-    };
+      ctx.restore();
+    }
 
-    const resizeCanvas = () => {
+    function resizeCanvas() {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
@@ -96,7 +100,7 @@
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
       drawCrosshair();
-    };
+    }
 
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
